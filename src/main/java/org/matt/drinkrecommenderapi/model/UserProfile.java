@@ -5,12 +5,13 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "profiles")
-public class UserProfile {
+public class UserProfile implements Serializable{
 
     //private static final long serialVersionUID = -2343243243242432341L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
 
     @Column(name = "firstname")
     private String firstName;
