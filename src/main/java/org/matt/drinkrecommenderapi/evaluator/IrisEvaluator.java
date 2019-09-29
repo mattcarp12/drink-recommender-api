@@ -27,24 +27,30 @@ public class IrisEvaluator {
         Map<FieldName, FieldValue> arguments = new LinkedHashMap<>();
         for (InputField inputField : evaluator.getInputFields()) {
             FieldName inputName = inputField.getName();
-            switch (inputName.getValue()) {
-                case "x1": // Petal Length
+            FieldValue fieldValue = inputField.prepare(flowerFeatures.features.get(inputName.getValue()));
+            arguments.put(inputName, fieldValue);
+
+
+            /*switch (inputName.getValue()) {
+                case "Petal Length": // Petal Length
                     arguments.put(inputName, inputField.prepare(flowerFeatures.petalLength));
                     break;
-                case "x2": // Petal Width
+                case "Petal Width": // Petal Width
                     arguments.put(inputName, inputField.prepare(flowerFeatures.petalWidth));
                     break;
-                case "x3": // Sepal Length
+                case "Sepal Length": // Sepal Length
                     arguments.put(inputName, inputField.prepare(flowerFeatures.sepalLength));
                     break;
-                case "x4": // Sepal Width
+                case "Sepal Width": // Sepal Width
                     arguments.put(inputName, inputField.prepare(flowerFeatures.sepalWidth));
                     break;
-            }
+            }*/
+
+
         }
         //Map<FieldName, ?> results = evaluator.evaluate(arguments);
         Map<String, ?> results = EvaluatorUtil.decodeAll(evaluator.evaluate(arguments));
-        String prediction = (String) results.get("y");
+        String prediction = (String) results.get("Species");
         System.out.println("prediction is " + prediction);
         return prediction;
     }
