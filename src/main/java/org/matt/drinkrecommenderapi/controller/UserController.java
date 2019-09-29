@@ -13,8 +13,12 @@ import java.util.List;
 @RestController
 public class UserController {
 
-    @Autowired
+    final
     UserRepository repository;
+
+    public UserController(UserRepository repository) {
+        this.repository = repository;
+    }
 
     @GetMapping("/users")
     public List<UserProfile> getUsers() {

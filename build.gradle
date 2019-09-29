@@ -18,6 +18,7 @@ ext {
 }
 
 dependencies {
+	// Spring
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
@@ -25,6 +26,10 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+
+	// PMML
+	implementation 'org.jpmml:pmml-evaluator:1.4.13'
+	implementation 'org.jpmml:pmml-evaluator-extension:1.4.13'
 }
 
 test {
