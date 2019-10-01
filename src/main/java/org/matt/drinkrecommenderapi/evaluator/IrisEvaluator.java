@@ -6,6 +6,7 @@ import org.jpmml.evaluator.visitors.DefaultVisitorBattery;
 import org.matt.drinkrecommenderapi.model.FlowerFeatures;
 import org.springframework.core.io.ClassPathResource;
 
+import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -25,35 +26,15 @@ public class IrisEvaluator {
 
     public String getPrediction(FlowerFeatures flowerFeatures) {
         Map<FieldName, FieldValue> arguments = new LinkedHashMap<>();
+        FieldName fn; FieldValue fv;
         for (InputField inputField : evaluator.getInputFields()) {
-
-            FieldName inputName = inputField.getName();
-            //FieldValue fieldValue = inputField.prepare(flowerFeatures.features.get(inputName.getValue()));
-            //arguments.put(inputName, fieldValue);
-
-
-            switch (inputName.getValue()) {
-                case "Petal Length": // Petal Length
-                    arguments.put(inputName, inputField.prepare(flowerFeatures.petalLength));
-                    break;
-                case "Petal Width": // Petal Width
-                    arguments.put(inputName, inputField.prepare(flowerFeatures.petalWidth));
-                    break;
-                case "Sepal Length": // Sepal Length
-                    arguments.put(inputName, inputField.prepare(flowerFeatures.sepalLength));
-                    break;
-                case "Sepal Width": // Sepal Width
-                    arguments.put(inputName, inputField.prepare(flowerFeatures.sepalWidth));
-                    break;
-            }
-
-
+            fn = inputField.getName();
+            fv = inputField.prepare(flowerFeatures.features.get(fn.getValue()));
+            arguments.put(fn, fv);
         }
         Map<String, ?> results = EvaluatorUtil.decodeAll(evaluator.evaluate(arguments));
         String prediction = (String) results.get("Species");
         System.out.println("prediction is " + prediction);
         return prediction;
     }
-
-
 }
