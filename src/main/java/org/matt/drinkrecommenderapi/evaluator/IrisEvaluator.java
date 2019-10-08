@@ -18,8 +18,8 @@ public class IrisEvaluator {
         evaluator = new LoadingModelEvaluatorBuilder()
                 .setLocatable(false)
                 .setVisitors(new DefaultVisitorBattery())
-                .load(new File(getClass().getClassLoader().getResource("python/model.pmml").getFile()))
-                //.load(new ClassPathResource("python/model.pmml").getFile())
+                //.load(new File(getClass().getClassLoader().getResource("python/model.pmml").getFile()))
+                .load(new ClassPathResource("python/model.pmml").getInputStream())
                 .build();
         System.out.println("evaluator initialized");
     }
