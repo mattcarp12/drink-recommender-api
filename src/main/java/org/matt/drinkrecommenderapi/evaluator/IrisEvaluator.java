@@ -6,7 +6,7 @@ import org.jpmml.evaluator.visitors.DefaultVisitorBattery;
 import org.matt.drinkrecommenderapi.model.FlowerFeatures;
 import org.springframework.core.io.ClassPathResource;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -18,7 +18,8 @@ public class IrisEvaluator {
         evaluator = new LoadingModelEvaluatorBuilder()
                 .setLocatable(false)
                 .setVisitors(new DefaultVisitorBattery())
-                .load(new ClassPathResource("python/model.pmml").getFile())
+                .load(new File(getClass().getClassLoader().getResource("python/model.pmml").getFile()))
+                //.load(new ClassPathResource("python/model.pmml").getFile())
                 .build();
         System.out.println("evaluator initialized");
     }
@@ -26,7 +27,8 @@ public class IrisEvaluator {
 
     public String getPrediction(FlowerFeatures flowerFeatures) {
         Map<FieldName, FieldValue> arguments = new LinkedHashMap<>();
-        FieldName fn; FieldValue fv;
+        FieldName fn;
+        FieldValue fv;
         for (InputField inputField : evaluator.getInputFields()) {
             fn = inputField.getName();
             fv = inputField.prepare(flowerFeatures.features.get(fn.getValue()));
