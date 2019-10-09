@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<PMML xmlns="http://www.dmg.org/PMML-4_3" xmlns:data="http://jpmml.org/jpmml-model/InlineTable" version="4.3">
+	<Header>
+		<Application name="JPMML-SkLearn" version="1.5.20"/>
+		<Timestamp>2019-10-09T09:50:11Z</Timestamp>
+	</Header>
+	<DataDictionary>
+		<DataField name="drink" optype="categorical" dataType="string">
+			<Value value="beer"/>
+			<Value value="soda"/>
+			<Value value="water"/>
+			<Value value="wine"/>
+		</DataField>
+		<DataField name="gender" optype="categorical" dataType="string">
+			<Value value="female"/>
+			<Value value="male"/>
+		</DataField>
+		<DataField name="pets" optype="categorical" dataType="string">
+			<Value value="0"/>
+			<Value value="1"/>
+			<Value value="2+"/>
+		</DataField>
+		<DataField name="dayofweek" optype="categorical" dataType="string">
+			<Value value="friday"/>
+			<Value value="monday"/>
+			<Value value="saturday"/>
+			<Value value="thursday"/>
+			<Value value="tuesday"/>
+			<Value value="wednesday"/>
+		</DataField>
+	</DataDictionary>
+	<TransformationDictionary/>
+	<NaiveBayesModel threshold="0.0" functionName="classification">
+		<MiningSchema>
+			<MiningField name="drink" usageType="target"/>
+			<MiningField name="gender" missingValueTreatment="asIs"/>
+			<MiningField name="pets" missingValueTreatment="asIs"/>
+			<MiningField name="dayofweek" missingValueTreatment="asIs"/>
+		</MiningSchema>
+		<Output>
+			<OutputField name="probability(beer)" optype="continuous" dataType="double" feature="probability" value="beer"/>
+			<OutputField name="probability(soda)" optype="continuous" dataType="double" feature="probability" value="soda"/>
+			<OutputField name="probability(water)" optype="continuous" dataType="double" feature="probability" value="water"/>
+			<OutputField name="probability(wine)" optype="continuous" dataType="double" feature="probability" value="wine"/>
+		</Output>
+		<ModelStats>
+			<UnivariateStats field="gender">
+				<Counts totalFreq="10" missingFreq="0" invalidFreq="0"/>
+				<DiscrStats>
+					<Array type="string">female male</Array>
+					<Array type="int">4 6</Array>
+				</DiscrStats>
+			</UnivariateStats>
+			<UnivariateStats field="pets">
+				<Counts totalFreq="10" missingFreq="0" invalidFreq="0"/>
+				<DiscrStats>
+					<Array type="string">0 1 2+</Array>
+					<Array type="int">5 3 2</Array>
+				</DiscrStats>
+			</UnivariateStats>
+			<UnivariateStats field="dayofweek">
+				<Counts totalFreq="10" missingFreq="0" invalidFreq="0"/>
+				<DiscrStats>
+					<Array type="string">friday monday saturday thursday tuesday wednesday</Array>
+					<Array type="int">2 1 3 2 1 1</Array>
+				</DiscrStats>
+			</UnivariateStats>
+		</ModelStats>
+		<LocalTransformations>
+			<DerivedField name="gender=male" optype="continuous" dataType="double">
+				<NormDiscrete field="gender" value="male"/>
+			</DerivedField>
+			<DerivedField name="pets=0" optype="continuous" dataType="double">
+				<NormDiscrete field="pets" value="0"/>
+			</DerivedField>
+			<DerivedField name="pets=1" optype="continuous" dataType="double">
+				<NormDiscrete field="pets" value="1"/>
+			</DerivedField>
+			<DerivedField name="pets=2+" optype="continuous" dataType="double">
+				<NormDiscrete field="pets" value="2+"/>
+			</DerivedField>
+			<DerivedField name="dayofweek=friday" optype="continuous" dataType="double">
+				<NormDiscrete field="dayofweek" value="friday"/>
+			</DerivedField>
+			<DerivedField name="dayofweek=monday" optype="continuous" dataType="double">
+				<NormDiscrete field="dayofweek" value="monday"/>
+			</DerivedField>
+			<DerivedField name="dayofweek=saturday" optype="continuous" dataType="double">
+				<NormDiscrete field="dayofweek" value="saturday"/>
+			</DerivedField>
+			<DerivedField name="dayofweek=thursday" optype="continuous" dataType="double">
+				<NormDiscrete field="dayofweek" value="thursday"/>
+			</DerivedField>
+			<DerivedField name="dayofweek=tuesday" optype="continuous" dataType="double">
+				<NormDiscrete field="dayofweek" value="tuesday"/>
+			</DerivedField>
+			<DerivedField name="dayofweek=wednesday" optype="continuous" dataType="double">
+				<NormDiscrete field="dayofweek" value="wednesday"/>
+			</DerivedField>
+		</LocalTransformations>
+		<BayesInputs>
+			<BayesInput fieldName="gender=male">
+				<TargetValueStats>
+					<TargetValueStat value="beer">
+						<GaussianDistribution mean="1.0" variance="2.5E-10"/>
+					</TargetValueStat>
+					<TargetValueStat value="soda">
+						<GaussianDistribution mean="0.5" variance="0.25000000025"/>
+					</TargetValueStat>
+					<TargetValueStat value="water">
+						<GaussianDistribution mean="0.5" variance="0.25000000025"/>
+					</TargetValueStat>
+					<TargetValueStat value="wine">
+						<GaussianDistribution mean="0.0" variance="2.5E-10"/>
+					</TargetValueStat>
+				</TargetValueStats>
+			</BayesInput>
+			<BayesInput fieldName="pets=0">
+				<TargetValueStats>
+					<TargetValueStat value="beer">
+						<GaussianDistribution mean="0.5" variance="0.25000000025"/>
+					</TargetValueStat>
+					<TargetValueStat value="soda">
+						<GaussianDistribution mean="0.5" variance="0.25000000025"/>
+					</TargetValueStat>
+					<TargetValueStat value="water">
+						<GaussianDistribution mean="0.5" variance="0.25000000025"/>
+					</TargetValueStat>
+					<TargetValueStat value="wine">
+						<GaussianDistribution mean="0.5" variance="0.25000000025"/>
+					</TargetValueStat>
+				</TargetValueStats>
+			</BayesInput>
+			<BayesInput fieldName="pets=1">
+				<TargetValueStats>
+					<TargetValueStat value="beer">
+						<GaussianDistribution mean="0.25" variance="0.18750000025"/>
+					</TargetValueStat>
+					<TargetValueStat value="soda">
+						<GaussianDistribution mean="0.0" variance="2.5E-10"/>
+					</TargetValueStat>
+					<TargetValueStat value="water">
+						<GaussianDistribution mean="0.5" variance="0.25000000025"/>
+					</TargetValueStat>
+					<TargetValueStat value="wine">
+						<GaussianDistribution mean="0.5" variance="0.25000000025"/>
+					</TargetValueStat>
+				</TargetValueStats>
+			</BayesInput>
+			<BayesInput fieldName="pets=2+">
+				<TargetValueStats>
+					<TargetValueStat value="beer">
+						<GaussianDistribution mean="0.25" variance="0.18750000025"/>
+					</TargetValueStat>
+					<TargetValueStat value="soda">
+						<GaussianDistribution mean="0.5" variance="0.25000000025"/>
+					</TargetValueStat>
+					<TargetValueStat value="water">
+						<GaussianDistribution mean="0.0" variance="2.5E-10"/>
+					</TargetValueStat>
+					<TargetValueStat value="wine">
+						<GaussianDistribution mean="0.0" variance="2.5E-10"/>
+					</TargetValueStat>
+				</TargetValueStats>
+			</BayesInput>
+			<BayesInput fieldName="dayofweek=friday">
+				<TargetValueStats>
+					<TargetValueStat value="beer">
+						<GaussianDistribution mean="0.25" variance="0.18750000025"/>
+					</TargetValueStat>
+					<TargetValueStat value="soda">
+						<GaussianDistribution mean="0.0" variance="2.5E-10"/>
+					</TargetValueStat>
+					<TargetValueStat value="water">
+						<GaussianDistribution mean="0.0" variance="2.5E-10"/>
+					</TargetValueStat>
+					<TargetValueStat value="wine">
+						<GaussianDistribution mean="0.5" variance="0.25000000025"/>
+					</TargetValueStat>
+				</TargetValueStats>
+			</BayesInput>
+			<BayesInput fieldName="dayofweek=monday">
+				<TargetValueStats>
+					<TargetValueStat value="beer">
+						<GaussianDistribution mean="0.0" variance="2.5E-10"/>
+					</TargetValueStat>
+					<TargetValueStat value="soda">
+						<GaussianDistribution mean="0.0" variance="2.5E-10"/>
+					</TargetValueStat>
+					<TargetValueStat value="water">
+						<GaussianDistribution mean="0.5" variance="0.25000000025"/>
+					</TargetValueStat>
+					<TargetValueStat value="wine">
+						<GaussianDistribution mean="0.0" variance="2.5E-10"/>
+					</TargetValueStat>
+				</TargetValueStats>
+			</BayesInput>
+			<BayesInput fieldName="dayofweek=saturday">
+				<TargetValueStats>
+					<TargetValueStat value="beer">
+						<GaussianDistribution mean="0.75" variance="0.18750000025"/>
+					</TargetValueStat>
+					<TargetValueStat value="soda">
+						<GaussianDistribution mean="0.0" variance="2.5E-10"/>
+					</TargetValueStat>
+					<TargetValueStat value="water">
+						<GaussianDistribution mean="0.0" variance="2.5E-10"/>
+					</TargetValueStat>
+					<TargetValueStat value="wine">
+						<GaussianDistribution mean="0.0" variance="2.5E-10"/>
+					</TargetValueStat>
+				</TargetValueStats>
+			</BayesInput>
+			<BayesInput fieldName="dayofweek=thursday">
+				<TargetValueStats>
+					<TargetValueStat value="beer">
+						<GaussianDistribution mean="0.0" variance="2.5E-10"/>
+					</TargetValueStat>
+					<TargetValueStat value="soda">
+						<GaussianDistribution mean="0.5" variance="0.25000000025"/>
+					</TargetValueStat>
+					<TargetValueStat value="water">
+						<GaussianDistribution mean="0.0" variance="2.5E-10"/>
+					</TargetValueStat>
+					<TargetValueStat value="wine">
+						<GaussianDistribution mean="0.5" variance="0.25000000025"/>
+					</TargetValueStat>
+				</TargetValueStats>
+			</BayesInput>
+			<BayesInput fieldName="dayofweek=tuesday">
+				<TargetValueStats>
+					<TargetValueStat value="beer">
+						<GaussianDistribution mean="0.0" variance="2.5E-10"/>
+					</TargetValueStat>
+					<TargetValueStat value="soda">
+						<GaussianDistribution mean="0.0" variance="2.5E-10"/>
+					</TargetValueStat>
+					<TargetValueStat value="water">
+						<GaussianDistribution mean="0.5" variance="0.25000000025"/>
+					</TargetValueStat>
+					<TargetValueStat value="wine">
+						<GaussianDistribution mean="0.0" variance="2.5E-10"/>
+					</TargetValueStat>
+				</TargetValueStats>
+			</BayesInput>
+			<BayesInput fieldName="dayofweek=wednesday">
+				<TargetValueStats>
+					<TargetValueStat value="beer">
+						<GaussianDistribution mean="0.0" variance="2.5E-10"/>
+					</TargetValueStat>
+					<TargetValueStat value="soda">
+						<GaussianDistribution mean="0.5" variance="0.25000000025"/>
+					</TargetValueStat>
+					<TargetValueStat value="water">
+						<GaussianDistribution mean="0.0" variance="2.5E-10"/>
+					</TargetValueStat>
+					<TargetValueStat value="wine">
+						<GaussianDistribution mean="0.0" variance="2.5E-10"/>
+					</TargetValueStat>
+				</TargetValueStats>
+			</BayesInput>
+		</BayesInputs>
+		<BayesOutput fieldName="drink">
+			<TargetValueCounts>
+				<TargetValueCount value="beer" count="4"/>
+				<TargetValueCount value="soda" count="2"/>
+				<TargetValueCount value="water" count="2"/>
+				<TargetValueCount value="wine" count="2"/>
+			</TargetValueCounts>
+		</BayesOutput>
+	</NaiveBayesModel>
+</PMML>
