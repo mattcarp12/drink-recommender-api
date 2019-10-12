@@ -32,7 +32,6 @@ public class IrisEvaluator {
             arguments.put(fn, fv);
         }
         Map<String, ?> results = EvaluatorUtil.decodeAll(evaluator.evaluate(arguments));
-        String prediction = (String) results.get("Species");
-        return prediction;
+        return (String) results.get("Species");
     }
 }

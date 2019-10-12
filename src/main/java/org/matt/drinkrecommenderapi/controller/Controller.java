@@ -1,19 +1,25 @@
 package org.matt.drinkrecommenderapi.controller;
 
+import org.jpmml.evaluator.Evaluator;
 import org.matt.drinkrecommenderapi.evaluator.DrinkModelEvaluator;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.matt.drinkrecommenderapi.model.Question;
+import org.matt.drinkrecommenderapi.repository.QuestionRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 public class Controller {
 
-    private DrinkModelEvaluator evaluator;
+    private final QuestionRepository questionRepository;
+    private final DrinkModelEvaluator evaluator;
 
-    public Controller() throws Exception{
-        evaluator = new DrinkModelEvaluator();
+    public Controller(DrinkModelEvaluator evaluator, QuestionRepository questionRepository) throws Exception {
+        this.evaluator = evaluator;
+        this.questionRepository = questionRepository;
     }
 
     @GetMapping("/drink-recommender")
@@ -22,5 +28,21 @@ public class Controller {
     ) {
         return evaluator.getPrediction(allRequestParams);
     }
+
+    @GetMapping("/question")
+    public List<Question> getQuestions() {
+        return questionRepository.findAll();
+    }
+
+/*    @GetMapping("/question/{name}")
+    public Optional<Question> getQuestion(@PathVariable String name) {
+        return questionRepository.findById(name);
+    }*/
+
+    @PostMapping("/question")
+    public Question createQuestion(@RequestBody Question question) {
+        return questionRepository.save(question);
+    }
+
 
 }

@@ -1,9 +1,29 @@
 package org.matt.drinkrecommenderapi.model;
 
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "questions")
 public class Question {
-    String questionName;
-    String questionText;
-    List<String> responses;
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
+    private String name;
+    private String questionText;
+
+    @ElementCollection
+    @CollectionTable(name = "question_choices", joinColumns = @JoinColumn(name = "question_id"))
+    Set<String> questionChoices = new HashSet<>();
+
 }

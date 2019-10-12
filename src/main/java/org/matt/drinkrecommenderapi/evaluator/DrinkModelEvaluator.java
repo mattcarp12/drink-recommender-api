@@ -8,7 +8,6 @@ import org.springframework.core.io.ClassPathResource;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-
 public class DrinkModelEvaluator {
 
     Evaluator evaluator;
