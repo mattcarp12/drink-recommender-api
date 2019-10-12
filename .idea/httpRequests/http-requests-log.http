@@ -1,0 +1,46 @@
+GET http://localhost:8080/question
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-10-12T041433.200.json
+
+###
+
+GET http://localhost:8080/question
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-10-12T033658.200.json
+
+###
+
+GET http://localhost:8080/question/pets
+
+<> 2019-10-12T033647.200.json
+
+###
+
+GET http://localhost:8080/question
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-10-12T033210.200.json
+
+###
+
+GET http://localhost:8080/question
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-10-12T095943.200.json
+
+###
+
+GET http://localhost:8080/question
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-10-12T093841.200.json
+
+###
+

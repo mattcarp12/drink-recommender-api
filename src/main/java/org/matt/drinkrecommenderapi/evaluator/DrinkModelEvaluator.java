@@ -4,7 +4,6 @@ import org.dmg.pmml.FieldName;
 import org.jpmml.evaluator.*;
 import org.jpmml.evaluator.visitors.DefaultVisitorBattery;
 import org.springframework.core.io.ClassPathResource;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 

@@ -1,10 +1,8 @@
 package org.matt.drinkrecommenderapi.controller;
 
-import org.jpmml.evaluator.Evaluator;
 import org.matt.drinkrecommenderapi.evaluator.DrinkModelEvaluator;
 import org.matt.drinkrecommenderapi.model.Question;
 import org.matt.drinkrecommenderapi.repository.QuestionRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -34,15 +32,14 @@ public class Controller {
         return questionRepository.findAll();
     }
 
-/*    @GetMapping("/question/{name}")
-    public Optional<Question> getQuestion(@PathVariable String name) {
-        return questionRepository.findById(name);
-    }*/
+    @GetMapping("/question/{name}")
+    public Question getQuestion(@PathVariable String name) {
+        return questionRepository.findQuestionByName(name);
+    }
 
     @PostMapping("/question")
     public Question createQuestion(@RequestBody Question question) {
         return questionRepository.save(question);
     }
-
 
 }
