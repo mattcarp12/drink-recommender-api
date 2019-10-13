@@ -32,7 +32,7 @@ public class Controller {
         return questionRepository.findAll();
     }
 
-    @PostMapping(value = "/question", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+    @PostMapping(value = "/question", consumes = MediaType.APPLICATION_JSON_VALUE)
     public Question createQuestion(@RequestBody Question question) {
         return questionRepository.save(question);
     }

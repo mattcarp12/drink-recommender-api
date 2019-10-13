@@ -8,6 +8,20 @@ Cache-Control: no-cache
 "questionChoices": ["yes", "no"]
 }
 
+<> 2019-10-13T030745.415.json
+
+###
+
+POST https://peaceful-ocean-58052.herokuapp.com/question
+Accept: application/json
+Cache-Control: no-cache
+
+{
+"questionName": "test",
+"questionText": "how do you test?",
+"questionChoices": ["yes", "no"]
+}
+
 <> 2019-10-13T030256.415.json
 
 ###
