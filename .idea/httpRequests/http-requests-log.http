@@ -1,3 +1,93 @@
+POST https://peaceful-ocean-58052.herokuapp.com/question
+Accept: application/json
+Cache-Control: no-cache
+
+{
+"questionName": "test",
+"questionText": "how do you test?",
+"questionChoices": ["yes", "no"]
+}
+
+<> 2019-10-13T030256.415.json
+
+###
+
+POST https://peaceful-ocean-58052.herokuapp.com/question
+Accept: application/json
+Cache-Control: no-cache
+
+{
+"questionName": "test",
+"questionText": "how do you test?",
+"questionChoices": ["yes", "no"]
+}
+
+<> 2019-10-13T025457.415.json
+
+###
+
+POST https://peaceful-ocean-58052.herokuapp.com/question
+Accept: */*
+Cache-Control: no-cache
+
+{
+"questionName": "test",
+"questionText": "how do you test?",
+"questionChoices": ["yes", "no"]
+}
+
+<> 2019-10-13T025420.415.json
+
+###
+
+GET https://peaceful-ocean-58052.herokuapp.com/question
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-10-13T025303.200.json
+
+###
+
+GET https://peaceful-ocean-58052.herokuapp.com/question
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-10-13T024643.200.json
+
+###
+
+GET https://peaceful-ocean-58052.herokuapp.com/question
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-10-13T020043.200.json
+
+###
+
+GET https://peaceful-ocean-58052.herokuapp.com/question
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-10-13T015915.200.json
+
+###
+
+GET https://peaceful-ocean-58052.herokuapp.com/question
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-10-13T015241.200.json
+
+###
+
+GET http://localhost:8080/question
+Accept: */*
+Cache-Control: no-cache
+
+<> 2019-10-13T082038.200.json
+
+###
+
 GET http://localhost:8080/question
 Accept: */*
 Cache-Control: no-cache

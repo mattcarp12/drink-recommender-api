@@ -3,6 +3,7 @@ package org.matt.drinkrecommenderapi.controller;
 import org.matt.drinkrecommenderapi.evaluator.DrinkModelEvaluator;
 import org.matt.drinkrecommenderapi.model.Question;
 import org.matt.drinkrecommenderapi.repository.QuestionRepository;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,7 +32,7 @@ public class Controller {
         return questionRepository.findAll();
     }
 
-    @PostMapping("/question")
+    @PostMapping(value = "/question", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
     public Question createQuestion(@RequestBody Question question) {
         return questionRepository.save(question);
     }
