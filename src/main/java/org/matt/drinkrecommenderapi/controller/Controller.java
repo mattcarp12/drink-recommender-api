@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 public class Controller {
@@ -30,11 +29,6 @@ public class Controller {
     @GetMapping("/question")
     public List<Question> getQuestions() {
         return questionRepository.findAll();
-    }
-
-    @GetMapping("/question/{name}")
-    public Question getQuestion(@PathVariable String name) {
-        return questionRepository.findQuestionByName(name);
     }
 
     @PostMapping("/question")
