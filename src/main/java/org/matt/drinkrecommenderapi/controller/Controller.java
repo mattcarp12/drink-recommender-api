@@ -3,7 +3,9 @@ package org.matt.drinkrecommenderapi.controller;
 import org.matt.drinkrecommenderapi.evaluator.DrinkModelEvaluator;
 import org.matt.drinkrecommenderapi.model.Question;
 import org.matt.drinkrecommenderapi.repository.QuestionRepository;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,9 +34,16 @@ public class Controller {
         return questionRepository.findAll();
     }
 
-    @PostMapping(value = "/question", consumes = MediaType.APPLICATION_JSON_VALUE)
+    /*
+    @PostMapping(value = "/question", consumes = "application/json")
     public Question createQuestion(@RequestBody Question question) {
         return questionRepository.save(question);
     }
+*/
 
+    @PostMapping("/question")
+    public ResponseEntity<Question> createQuestion(@RequestBody Question question) {
+        Question q = questionRepository.save(question);
+        return new ResponseEntity<>(q, new HttpHeaders(), HttpStatus.OK);
+    }
 }

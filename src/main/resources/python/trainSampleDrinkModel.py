@@ -6,7 +6,7 @@ from sklearn_pandas import DataFrameMapper
 import sqlalchemy as db
 
 #create connection
-con = db.create_engine('postgresql://user:user@localhost/drink-recommender')
+con = db.create_engine('postgresql://postgres:postgres@localhost/drink-recommender')
 
 #read data from postgres
 data = pd.read_sql("select * from sample_model_data"
@@ -24,7 +24,6 @@ pipeline = PMMLPipeline([
             (["gender"], [CategoricalDomain(), LabelBinarizer()]),
             (["pets"], [CategoricalDomain(), LabelBinarizer()]),
             (["dayofweek"], [CategoricalDomain(), LabelBinarizer()])
-            #([["gender"], ["pets"], ["dayofweek"]], [CategoricalDomain(), LabelBinarizer()])
         ])),
         ("classifier", GaussianNB())
     ])
