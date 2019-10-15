@@ -6,22 +6,16 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.Table;
 
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponse {
-
+@Table(name = "drinks")
+public class Drink {
     @Id
     int id;
-
-    @ManyToOne(targetEntity = Question.class)
-    int question_id;
-
-    int question_choice_id;
-
-
-    int drink_id;
+    String drink_name;
+    String drink_image_url;
 }
