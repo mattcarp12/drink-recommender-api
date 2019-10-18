@@ -2,24 +2,39 @@ package org.matt.drinkrecommenderapi.controller;
 
 import org.matt.drinkrecommenderapi.evaluator.DrinkModelEvaluator;
 import org.matt.drinkrecommenderapi.model.Question;
+import org.matt.drinkrecommenderapi.model.Session;
+import org.matt.drinkrecommenderapi.model.UserResponse;
+import org.matt.drinkrecommenderapi.model.dto.QuestionDTO;
+import org.matt.drinkrecommenderapi.model.dto.UserResponseDTO;
+import org.matt.drinkrecommenderapi.repository.DrinkRepository;
 import org.matt.drinkrecommenderapi.repository.QuestionRepository;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.matt.drinkrecommenderapi.repository.SessionRepository;
+import org.matt.drinkrecommenderapi.repository.UserResponseRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 @RestController
 public class Controller {
 
-    private final QuestionRepository questionRepository;
-    private final DrinkModelEvaluator evaluator;
+    QuestionRepository questionRepository;
+    UserResponseRepository userResponseRepository;
+    DrinkRepository drinkRepository;
+    SessionRepository sessionRepository;
+    DrinkModelEvaluator evaluator;
 
-    public Controller(DrinkModelEvaluator evaluator, QuestionRepository questionRepository) throws Exception {
-        this.evaluator = evaluator;
+    public Controller(QuestionRepository questionRepository,
+                      UserResponseRepository userResponseRepository,
+                      DrinkRepository drinkRepository,
+                      SessionRepository sessionRepository,
+                      DrinkModelEvaluator evaluator) {
         this.questionRepository = questionRepository;
+        this.userResponseRepository = userResponseRepository;
+        this.drinkRepository = drinkRepository;
+        this.sessionRepository = sessionRepository;
+        this.evaluator = evaluator;
     }
 
     @GetMapping("/drink-recommender")
@@ -30,20 +45,27 @@ public class Controller {
     }
 
     @GetMapping("/question")
-    public List<Question> getQuestions() {
-        return questionRepository.findAll();
+    public List<QuestionDTO> getQuestions() {
+        List<Question> questions = questionRepository.findAll();
+        List<QuestionDTO> questionDTOList = new ArrayList<>();
+        questions.forEach(question -> {
+            questionDTOList.add(new QuestionDTO(question.getQuestionName(), question.getQuestionText(), question.getQuestionChoiceList()));
+        });
+        return questionDTOList;
     }
 
-    /*
-    @PostMapping(value = "/question", consumes = "application/json")
-    public Question createQuestion(@RequestBody Question question) {
-        return questionRepository.save(question);
-    }
-*/
-
-    @PostMapping("/question")
-    public ResponseEntity<Question> createQuestion(@RequestBody Question question) {
-        Question q = questionRepository.save(question);
-        return new ResponseEntity<>(q, new HttpHeaders(), HttpStatus.OK);
+    @PostMapping("/user-response")
+    public List<UserResponse> createUserResponse(@RequestBody UserResponseDTO userResponseDTO) {
+        List<UserResponse> userResponseList = new ArrayList<>();
+        Session session = sessionRepository.save(new Session());
+        userResponseDTO.getAnswers().forEach((question, choice) -> {
+            UserResponse userResponse = new UserResponse();
+            userResponse.setSession(session);
+            userResponse.setDrink(drinkRepository.getOne(userResponseDTO.getDrink()));
+            userResponse.setQuestion(questionRepository.getOne(question));
+            userResponse.setQuestionChoice(questionRepository.getOne(question).getQuestionChoiceByChoiceString(choice));
+            userResponseList.add(userResponse);
+        });
+        return userResponseRepository.saveAll(userResponseList);
     }
 }
