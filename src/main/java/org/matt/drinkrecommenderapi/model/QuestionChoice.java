@@ -1,5 +1,6 @@
 package org.matt.drinkrecommenderapi.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -7,30 +8,21 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_responses")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponse {
+@Table(name = "question_choices")
+public class QuestionChoice {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    @ManyToOne
-    @JoinColumn
-    Session session;
-
-    @ManyToOne
-    @JoinColumn(name = "drink_name")
-    Drink drink;
+    private String choice;
 
     @ManyToOne
     @JoinColumn(name = "question_name")
-    Question question;
-
-    @ManyToOne
-    @JoinColumn(name = "question_choice")
-    QuestionChoice questionChoice;
+    @JsonBackReference
+    private Question question;
 
 }

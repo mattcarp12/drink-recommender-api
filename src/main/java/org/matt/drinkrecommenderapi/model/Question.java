@@ -1,12 +1,13 @@
 package org.matt.drinkrecommenderapi.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -15,13 +16,26 @@ import java.util.Set;
 @Table(name = "questions")
 public class Question {
 
-
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
     private String questionName;
     private String questionText;
-    @ElementCollection
-    @CollectionTable(name = "question_choices", joinColumns = @JoinColumn(name = "question_id"))
-    Set<String> questionChoices = new HashSet<>();
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    private List<QuestionChoice> questionChoices;
+
+    public List<String> getQuestionChoiceList() {
+        List<String> questionChoiceList = new ArrayList<>();
+        for (QuestionChoice questionChoice : questionChoices) {
+            questionChoiceList.add(questionChoice.getChoice());
+        }
+        return questionChoiceList;
+    }
+
+    public QuestionChoice getQuestionChoiceByChoiceString(String choice) {
+        for (QuestionChoice questionChoice : questionChoices) {
+            if (questionChoice.getChoice().equals(choice)) return questionChoice;
+        }
+        return null;
+    }
 }

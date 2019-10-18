@@ -9,12 +9,14 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "drinks")
+@Table(name = "users")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Drink {
+public class User {
+
     @Id
-    String drinkName;
-    String image_url;
+    String userName;
+    String password;
+
 }
