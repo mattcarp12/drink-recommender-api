@@ -1,7 +1,11 @@
-FROM python:3
+FROM python:3.6-slim
 
-ADD my_script.py /
+WORKDIR /app
 
-RUN pip install pystrich
+COPY . /app
 
-CMD [ "python", "./my_script.py" ]
+RUN pip install -r requirements.txt
+
+ENV NAME World
+
+CMD [ "python", "app.py" ]
