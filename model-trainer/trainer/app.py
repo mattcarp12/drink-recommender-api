@@ -3,6 +3,10 @@ from flask import Response
 
 app = Flask(__name__)
 
+# @app.route('/')
+# def run_app():
+#     print("Hello, World!")
+
 @app.route('/trainer')
 def run_app():
     train_model()
@@ -47,4 +51,6 @@ def train_model():
     from sklearn2pmml import sklearn2pmml
     sklearn2pmml(pipeline, "model.pmml")
 
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')
 

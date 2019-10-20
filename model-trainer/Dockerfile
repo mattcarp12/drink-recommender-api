@@ -8,4 +8,4 @@ RUN pip install -r requirements.txt
 
 ENV NAME World
 
-CMD [ "python", "app.py" ]
+CMD [ "python", "trainer/app.py" ]
