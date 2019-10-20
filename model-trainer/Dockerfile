@@ -1,11 +1,5 @@
 FROM python:3.6-slim
-
-WORKDIR /app
-
+COPY requirements.txt /
+RUN pip install -r /requirements.txt
 COPY . /app
-
-RUN pip install -r requirements.txt
-
-ENV NAME World
-
-CMD [ "python", "trainer/app.py" ]
+CMD [ "python", "/app/app.py" ]

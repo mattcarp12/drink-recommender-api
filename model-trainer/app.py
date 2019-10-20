@@ -3,9 +3,9 @@ from flask import Response
 
 app = Flask(__name__)
 
-# @app.route('/')
-# def run_app():
-#     print("Hello, World!")
+@app.route('/test')
+def hello_world():
+    print("Hello, World!")
 
 @app.route('/trainer')
 def run_app():
@@ -24,7 +24,8 @@ import sqlalchemy as db
 def train_model():
 
     #create connection
-    con = db.create_engine('postgresql://postgres:postgres@localhost/drink-recommender')
+    DATABASE_URL = os.environ['DATABASE_URL']
+    con = db.create_engine(DATABASE_URL)
 
     #read data from postgres
     data = pd.read_sql("select * from sample_model_data"
