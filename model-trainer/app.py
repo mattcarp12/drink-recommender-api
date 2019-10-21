@@ -1,26 +1,28 @@
 from flask import Flask
 from flask import Response
-
-app = Flask(__name__)
-
-@app.route('/test')
-def hello_world():
-    return "Hello, World!"
-
-@app.route('/trainer')
-def run_app():
-    train_model()
-    model = open("model.pmml").read()
-    return Response(response = model, status = 200, mimetype="application/xml")
-    
-
-
 import pandas as pd
 from sklearn.naive_bayes import GaussianNB
 from sklearn.preprocessing import LabelBinarizer
 from sklearn_pandas import DataFrameMapper
 import sqlalchemy as db
 import os
+
+app = Flask(__name__)
+
+@app.route('/test')
+def hello_world():
+    #create connection
+    DATABASE_URL = os.environ['DATABASE_URL']
+    con = db.create_engine(DATABASE_URL)
+    return Response(response = tuple(pd.read_sql("select * from test_table"
+                        , con = con
+                        , index_col = "id").iloc[0]), status = 200)
+
+@app.route('/trainer')
+def run_app():
+    train_model()
+    model = open("model.pmml").read()
+    return Response(response = model, status = 200, mimetype="application/xml")
 
 def train_model():
 
