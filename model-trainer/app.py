@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/test')
 def hello_world():
-    print("Hello, World!")
+    return "Hello, World!"
 
 @app.route('/trainer')
 def run_app():
@@ -20,6 +20,7 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.preprocessing import LabelBinarizer
 from sklearn_pandas import DataFrameMapper
 import sqlalchemy as db
+import os
 
 def train_model():
 
