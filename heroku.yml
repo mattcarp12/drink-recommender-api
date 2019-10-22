@@ -1,3 +1,4 @@
 build:
   docker:
-    web: model-trainer/Dockerfile
+    model-trainer: model-trainer/Dockerfile
+    web: Dockerfile
