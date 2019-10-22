@@ -1,5 +1,5 @@
 FROM python:3.6-slim
-RUN apt-get update && apt-get install -y default-jre
+RUN apt-get update && apt-get install -y openjdk-8-jdk
 COPY requirements.txt /
 RUN pip install -r /requirements.txt
 COPY . /app
