@@ -56,5 +56,6 @@ def train_model():
     sklearn2pmml(pipeline, "model.pmml")
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0')
+    port = os.environ['PORT']
+    app.run(debug=True, host='0.0.0.0', port = port)
 
