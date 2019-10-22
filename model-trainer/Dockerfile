@@ -1,5 +1,6 @@
 FROM python:3.6-slim
-RUN apt-get update && apt-get install -y openjdk-8-jdk
+RUN mkdir -p /usr/share/man/man1
+RUN apt-get update && apt-get install -y default-jre
 COPY requirements.txt /
 RUN pip install -r /requirements.txt
 COPY . /app
