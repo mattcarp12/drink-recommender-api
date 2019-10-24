@@ -27,6 +27,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+	implementation 'commons-dbcp:commons-dbcp:1.4'
 
 	// PMML
 	implementation 'org.jpmml:pmml-evaluator:1.4.13'
