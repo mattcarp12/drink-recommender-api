@@ -9,8 +9,12 @@ import os
 
 app = Flask(__name__)
 
-@app.route('/test')
+@app.route('/hello')
 def hello_world():
+    return 'Hello, World!'
+
+@app.route('/test')
+def database_test():
     #create connection
     DATABASE_URL = os.environ['DATABASE_URL']
     con = db.create_engine(DATABASE_URL)
