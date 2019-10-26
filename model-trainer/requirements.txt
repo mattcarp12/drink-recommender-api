@@ -1,0 +1,6 @@
+flask
+pandas
+sklearn
+sqlalchemy
+os
+sklearn2pmml
