@@ -16,7 +16,7 @@ public class DrinkModelEvaluator {
 
 
     public DrinkModelEvaluator() throws Exception {
-        modelClient = WebClient.create("http://localhost:5000");
+        modelClient = WebClient.create("https://localhost:5000");
         getModel();
     }
 

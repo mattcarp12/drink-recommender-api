@@ -1,4 +1,0 @@
-build:
-  docker:
-    model-trainer: model-trainer/Dockerfile
-    web: Dockerfile
