@@ -5,6 +5,7 @@ bin/
 !**/src/test/**
 build/*
 !build/libs
+.dbeaver
 
 
 ### STS ###
@@ -15,6 +16,7 @@ build/*
 .settings
 .springBeans
 .sts4-cache
+.pydevproject
 
 ### IntelliJ IDEA ###
 .idea

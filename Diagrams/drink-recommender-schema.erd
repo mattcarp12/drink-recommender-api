@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<diagram version="1" name="drink-recommender-schema.erd">
+	<entities>
+		<data-source id="postgres-jdbc-16e086c91ea-775238ab4cc1b0f5">
+			<entity id="1" name="drinks" fq-name="public.drinks" order="0" x="700" y="17">
+				<path name="public"/>
+				<path name="postgres"/>
+			</entity>
+			<entity id="2" name="question_choices" fq-name="public.question_choices" order="1" x="79" y="136">
+				<path name="public"/>
+				<path name="postgres"/>
+			</entity>
+			<entity id="3" name="questions" fq-name="public.questions" order="2" x="37" y="284">
+				<path name="public"/>
+				<path name="postgres"/>
+			</entity>
+			<entity id="4" name="session" fq-name="public.&quot;session&quot;" order="3" x="783" y="257">
+				<path name="public"/>
+				<path name="postgres"/>
+			</entity>
+			<entity id="5" name="user_responses" fq-name="public.user_responses" order="4" border-width="3" x="357" y="97">
+				<path name="public"/>
+				<path name="postgres"/>
+			</entity>
+			<entity id="6" name="users" fq-name="public.users" order="5" x="890" y="109">
+				<path name="public"/>
+				<path name="postgres"/>
+			</entity>
+		</data-source>
+	</entities>
+	<relations>
+		<relation name="fkc598fns6a2bitfgr3fewkc7cw" fq-name="public.user_responses.fkc598fns6a2bitfgr3fewkc7cw" type="fk" pk-ref="1" fk-ref="5"/>
+		<relation name="fkhrvsqcjl62q7h8ed0nnwa0h46" fq-name="public.user_responses.fkhrvsqcjl62q7h8ed0nnwa0h46" type="fk" pk-ref="2" fk-ref="5"/>
+		<relation name="fk8kh6pxn42brsrce1p85bnp89i" fq-name="public.question_choices.fk8kh6pxn42brsrce1p85bnp89i" type="fk" pk-ref="3" fk-ref="2"/>
+		<relation name="fkenv3l3u022bi879pt7o2ula1r" fq-name="public.user_responses.fkenv3l3u022bi879pt7o2ula1r" type="fk" pk-ref="3" fk-ref="5"/>
+		<relation name="fki8ntihgcxih6whei81gmwjh0l" fq-name="public.user_responses.fki8ntihgcxih6whei81gmwjh0l" type="fk" pk-ref="4" fk-ref="5"/>
+	</relations>
+</diagram>
