@@ -3,3 +3,7 @@ pandas
 sklearn
 sqlalchemy
 sklearn2pmml
+wheel
+redis
+rq
+freeze

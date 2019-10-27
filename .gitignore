@@ -6,6 +6,7 @@ bin/
 build/*
 !build/libs
 .dbeaver
+model-trainer/venv
 
 
 ### STS ###
@@ -34,3 +35,4 @@ out/
 
 ### VS Code ###
 .vscode/
+.env
