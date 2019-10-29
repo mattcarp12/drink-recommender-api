@@ -6,4 +6,3 @@ sklearn2pmml
 wheel
 redis
 rq
-freeze

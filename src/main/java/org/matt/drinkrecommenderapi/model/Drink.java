@@ -16,5 +16,5 @@ import javax.persistence.Table;
 public class Drink {
     @Id
     String drinkName;
-    String image_url;
+    String imageUrl;
 }
