@@ -1,5 +1,9 @@
 package org.matt.drinkrecommenderapi.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
 import org.matt.drinkrecommenderapi.evaluator.DrinkModelEvaluator;
 import org.matt.drinkrecommenderapi.model.Question;
 import org.matt.drinkrecommenderapi.model.Session;
@@ -10,31 +14,39 @@ import org.matt.drinkrecommenderapi.repository.DrinkRepository;
 import org.matt.drinkrecommenderapi.repository.QuestionRepository;
 import org.matt.drinkrecommenderapi.repository.SessionRepository;
 import org.matt.drinkrecommenderapi.repository.UserResponseRepository;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class Controller {
 
+	private final int MODEL_TRAIN_LIMIT = 100;
+	
     QuestionRepository questionRepository;
     UserResponseRepository userResponseRepository;
     DrinkRepository drinkRepository;
     SessionRepository sessionRepository;
     DrinkModelEvaluator evaluator;
+    StringRedisTemplate redisTemplate;
+    int counter;
 
     public Controller(QuestionRepository questionRepository,
                       UserResponseRepository userResponseRepository,
                       DrinkRepository drinkRepository,
                       SessionRepository sessionRepository,
-                      DrinkModelEvaluator evaluator) {
+                      DrinkModelEvaluator evaluator,
+                      StringRedisTemplate redisTemplate) {
         this.questionRepository = questionRepository;
         this.userResponseRepository = userResponseRepository;
         this.drinkRepository = drinkRepository;
         this.sessionRepository = sessionRepository;
         this.evaluator = evaluator;
+        this.redisTemplate = redisTemplate;
+        counter = 0;
     }
 
     @GetMapping("/drink-recommender")
@@ -66,6 +78,13 @@ public class Controller {
             userResponse.setQuestionChoice(questionRepository.getOne(question).getQuestionChoiceByChoiceString(choice));
             userResponseList.add(userResponse);
         });
+        
+        counter++;
+        if (counter > MODEL_TRAIN_LIMIT) {
+        	redisTemplate.convertAndSend("trainModel", "trainModel");
+        	counter = 0;
+        }
+        
         return userResponseRepository.saveAll(userResponseList);
     }
 }

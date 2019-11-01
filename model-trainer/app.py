@@ -6,6 +6,8 @@ from sklearn.preprocessing import LabelBinarizer
 from sklearn_pandas import DataFrameMapper
 import sqlalchemy as db
 import os
+import redis
+from threading import Thread
 
 app = Flask(__name__)
 
@@ -21,12 +23,19 @@ def database_test():
     return Response(response = tuple(pd.read_sql("select * from test_table"
                         , con = con
                         , index_col = "id").iloc[0]), status = 200)
+    
 
-@app.route('/trainer')
-def run_app():
-    train_model()
-    model = open("model.pmml").read()
-    return Response(response = model, status = 200, mimetype="application/xml")
+def pub(myredis):
+    myredis.publish('transferModel', 'transferModel')
+
+
+# Subscribe to messages that are sent from Spring Boot app 
+# When receive a message, invoke train_model()
+def sub(myredis, name):
+    pubsub = myredis.pubsub()
+    pubsub.subscribe(['trainModel'])
+    for item in pubsub.listen():
+        train_model()
 
 def train_model():
 
@@ -55,11 +64,20 @@ def train_model():
         ])
     pipeline.fit(X, y)
 
-    # save model as pmml file
+    # save model as pmml file then put to redis
     from sklearn2pmml import sklearn2pmml
     sklearn2pmml(pipeline, "model.pmml")
+    myredis.set(name = "MODEL", value = open("model.pmml", "r").read())
+    
+    # notify spring boot app the model is ready
+    pub(myredis)
+    
+    
+    
+
 
 if __name__ == '__main__':
-    port = os.environ['PORT']
-    app.run(debug=True, host='0.0.0.0', port = 5000)
+    myredis = redis.from_url(os.environ.get("REDIS_URL")) if os.environ.get("REDIS_URL") else redis.Redis()
+    #Thread(target=pub, args=(myredis,)).start()
+    Thread(target=sub, args=(myredis,'reader1')).start()
 

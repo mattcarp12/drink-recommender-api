@@ -11,21 +11,28 @@ import org.jpmml.evaluator.FieldValue;
 import org.jpmml.evaluator.InputField;
 import org.jpmml.evaluator.LoadingModelEvaluatorBuilder;
 import org.jpmml.evaluator.visitors.DefaultVisitorBattery;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.connection.Message;
+import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 
-public class DrinkModelEvaluator {
+public class DrinkModelEvaluator implements MessageListener {
 
 	private Evaluator evaluator;
 	private final StringRedisTemplate redisTemplate;
 	private final RedisMessageListenerContainer listenerContainer;
 	private String model;
+	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public DrinkModelEvaluator(StringRedisTemplate redisTemplate, RedisMessageListenerContainer listenerContainer)
 			throws Exception {
 		this.redisTemplate = redisTemplate;
 		this.listenerContainer = listenerContainer;
-		trainModel();
+		listenerContainer.addMessageListener(this, new ChannelTopic("transferModel"));
+		updateModel();
 	}
 
 	public String getPrediction(Map<String, String> parameters) {
@@ -40,19 +47,22 @@ public class DrinkModelEvaluator {
 		Map<String, ?> results = EvaluatorUtil.decodeAll(evaluator.evaluate(arguments));
 		return (String) results.get("drink");
 	}
-
-	private void updateEvaluator() throws Exception {
+	
+	public void updateModel() throws Exception {
+		this.model = redisTemplate.opsForValue().get("MODEL");
 		this.evaluator = new LoadingModelEvaluatorBuilder().setLocatable(false).setVisitors(new DefaultVisitorBattery())
 				.load(new ByteArrayInputStream(model.getBytes())).build();
 	}
 
-	public void trainModel() {
-		// Send a message to train the model
-		redisTemplate.convertAndSend("trainModel", "trainModel");
-	}
+	@Override
+	public void onMessage(Message message, byte[] pattern) {
+		if (message.toString().equals("transferModel")) {
+			try {
+				updateModel();
+			} catch (Exception e) {
+				logger.error(e.getLocalizedMessage());
+			}
+		}
 
-	public void setModel(String model) throws Exception {
-		this.model = model;
-		updateEvaluator();
 	}
 }

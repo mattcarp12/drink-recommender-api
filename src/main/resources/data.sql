@@ -6,7 +6,3 @@ insert into question_choices(choice, question_name) values ('Taco', 'hotdog');
 insert into question_choices(choice, question_name) values ('Male', 'gender');
 insert into question_choices(choice, question_name) values ('Feale', 'gender');
 insert into question_choices(choice, question_name) values ('Other', 'gender');
-
-
-select * from questions;
-select * from question_choices;
