@@ -1,29 +1,13 @@
-from flask import Flask
-from flask import Response
+import os
+from threading import Thread
+
 import pandas as pd
+import redis
 from sklearn.naive_bayes import GaussianNB
 from sklearn.preprocessing import LabelBinarizer
 from sklearn_pandas import DataFrameMapper
 import sqlalchemy as db
-import os
-import redis
-from threading import Thread
 
-app = Flask(__name__)
-
-@app.route('/hello')
-def hello_world():
-    return 'Hello, World!'
-
-@app.route('/test')
-def database_test():
-    #create connection
-    DATABASE_URL = os.environ['DATABASE_URL']
-    con = db.create_engine(DATABASE_URL)
-    return Response(response = tuple(pd.read_sql("select * from test_table"
-                        , con = con
-                        , index_col = "id").iloc[0]), status = 200)
-    
 
 def pub(myredis):
     myredis.publish('transferModel', 'transferModel')
@@ -40,7 +24,7 @@ def sub(myredis, name):
 def train_model():
 
     #create connection
-    DATABASE_URL = os.environ['DATABASE_URL']
+    DATABASE_URL = os.environ.get('DATABASE_URL') or "postgresql://postgres:postgres@localhost:5432/postgres"
     con = db.create_engine(DATABASE_URL)
 
     #read data from postgres
