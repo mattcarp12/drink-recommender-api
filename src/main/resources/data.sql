@@ -1,10 +1,14 @@
 insert into questions values ('hotdog', 'Is a hotdog a sandwich or taco?');
 insert into questions values ('tp', 'Toilet paper: over or under?');
+insert into questions values ('personality', 'Pick one word to describe your personality:');
 
 insert into question_choices(choice, question_name) values ('Sandwich', 'hotdog');
 insert into question_choices(choice, question_name) values ('Taco', 'hotdog');
 insert into question_choices(choice, question_name) values ('Over', 'tp');
 insert into question_choices(choice, question_name) values ('Under', 'tp');
+insert into question_choices(choice, question_name) values ('Effulgent', 'personality');
+insert into question_choices(choice, question_name) values ('Equanimous', 'personality');
+insert into question_choices(choice, question_name) values ('Exerable', 'personality');
 
 insert into drinks values ('water', 'www.images.com/water.jpg');
 insert into drinks values ('beer', 'www.images.com/beer.jpg');
