@@ -22,13 +22,18 @@ def sub(myredis, name):
         train_model()
 
 def train_model():
-
+    
+    try:
+        myredis
+    except NameError:
+        myredis = redis.from_url(os.environ.get("REDIS_URL")) if os.environ.get("REDIS_URL") else redis.Redis()
+    
     #create connection
     DATABASE_URL = os.environ.get('DATABASE_URL') or "postgresql://postgres:postgres@localhost:5432/postgres"
     con = db.create_engine(DATABASE_URL)
 
     #read data from postgres
-    data = pd.read_sql("select * from sample_model_data"
+    data = pd.read_sql("select * from model_training_data"
                        , con = con
                        , index_col="id")
 
@@ -40,9 +45,8 @@ def train_model():
 
     pipeline = PMMLPipeline([
             ("transformation", DataFrameMapper([
-                (["gender"], [CategoricalDomain(), LabelBinarizer()]),
-                (["pets"], [CategoricalDomain(), LabelBinarizer()]),
-                (["dayofweek"], [CategoricalDomain(), LabelBinarizer()])
+                (["hotdog"], [CategoricalDomain(), LabelBinarizer()]),
+                (["tp"], [CategoricalDomain(), LabelBinarizer()])
             ])),
             ("classifier", GaussianNB())
         ])
