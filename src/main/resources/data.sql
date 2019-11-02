@@ -6,10 +6,10 @@ insert into question_choices(choice, question_name) values ('Taco', 'hotdog');
 insert into question_choices(choice, question_name) values ('Over', 'tp');
 insert into question_choices(choice, question_name) values ('Under', 'tp');
 
-insert into drink values ('water', 'www.images.com/water.jpg');
-insert into drink values ('beer', 'www.images.com/beer.jpg');
-insert into drink values ('soda', 'www.images.com/soda.jpg');
-insert into drink values ('wine', 'www.images.com/wine.jpg');
+insert into drinks values ('water', 'www.images.com/water.jpg');
+insert into drinks values ('beer', 'www.images.com/beer.jpg');
+insert into drinks values ('soda', 'www.images.com/soda.jpg');
+insert into drinks values ('wine', 'www.images.com/wine.jpg');
 
 
 drop table if exists model_training_data;
