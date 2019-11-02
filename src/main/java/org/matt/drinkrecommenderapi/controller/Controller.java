@@ -14,6 +14,8 @@ import org.matt.drinkrecommenderapi.repository.DrinkRepository;
 import org.matt.drinkrecommenderapi.repository.QuestionRepository;
 import org.matt.drinkrecommenderapi.repository.SessionRepository;
 import org.matt.drinkrecommenderapi.repository.UserResponseRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class Controller {
 
-	private final int MODEL_TRAIN_LIMIT = 100;
+	private final int MODEL_TRAIN_LIMIT = 10;
 	
     QuestionRepository questionRepository;
     UserResponseRepository userResponseRepository;
@@ -33,6 +35,7 @@ public class Controller {
     DrinkModelEvaluator evaluator;
     StringRedisTemplate redisTemplate;
     int counter;
+    Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public Controller(QuestionRepository questionRepository,
                       UserResponseRepository userResponseRepository,
@@ -79,7 +82,7 @@ public class Controller {
             userResponseList.add(userResponse);
         });
         
-        counter++;
+        logger.info("Counter:" + counter++);
         if (counter > MODEL_TRAIN_LIMIT) {
         	redisTemplate.convertAndSend("trainModel", "trainModel");
         	counter = 0;
