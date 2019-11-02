@@ -18,13 +18,14 @@ import org.springframework.data.redis.connection.MessageListener;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.listener.ChannelTopic;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DrinkModelEvaluator implements MessageListener {
 
 	private Evaluator evaluator;
 	private final StringRedisTemplate redisTemplate;
 	private final RedisMessageListenerContainer listenerContainer;
-	private String model;
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public DrinkModelEvaluator(StringRedisTemplate redisTemplate, RedisMessageListenerContainer listenerContainer)
@@ -49,9 +50,12 @@ public class DrinkModelEvaluator implements MessageListener {
 	}
 	
 	public void updateModel() throws Exception {
-		this.model = redisTemplate.opsForValue().get("MODEL");
-		this.evaluator = new LoadingModelEvaluatorBuilder().setLocatable(false).setVisitors(new DefaultVisitorBattery())
-				.load(new ByteArrayInputStream(model.getBytes())).build();
+		String model = redisTemplate.opsForValue().get("MODEL");
+		this.evaluator = new LoadingModelEvaluatorBuilder()
+				.setLocatable(false)
+				.setVisitors(new DefaultVisitorBattery())
+				.load(new ByteArrayInputStream(model.getBytes()))
+				.build();
 	}
 
 	@Override
