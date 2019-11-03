@@ -39,7 +39,7 @@ def get_training_data(con):
                        , con = con
                        , index_col="id")
     
-    data.pivot(index = 'session_id', colums = 'question_name', values = 'question_choice')
+    data.pivot(index = 'session_id', columns = 'question_name', values = 'question_choice')
     
     logging.info(data)
     
