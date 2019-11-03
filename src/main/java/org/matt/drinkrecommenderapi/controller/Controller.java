@@ -78,7 +78,7 @@ public class Controller {
 			userResponseList.add(userResponse);
 		});
 
-		logger.info("Counter = %d", counter++);
+		logger.info("Counter = " + counter++);
 		
 		if (counter > MODEL_TRAIN_LIMIT) {
 			redisTemplate.convertAndSend("trainModel", "trainModel");
