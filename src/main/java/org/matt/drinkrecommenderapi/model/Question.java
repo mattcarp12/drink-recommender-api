@@ -16,7 +16,10 @@ import java.util.List;
 @Table(name = "questions")
 public class Question {
 
-    @Id
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    int id;
+	
     private String questionName;
     private String questionText;
 

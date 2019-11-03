@@ -41,18 +41,22 @@ def get_sample_data(con):
 
     
 def get_training_data(con):
-    data = pd.read_sql("""select drink_name as drink,  
-                        question_name, 
-                        question_choices.choice,
+    data = pd.read_sql("""select 
+                        user_responses.id as id, 
+                        drink_name as drink,  
+                        user_responses.question_name as question_name, 
+                        question_choices.choice as choice,
                         session_id
                         from user_responses inner join question_choices
                         on user_responses.question_choice = question_choices.id"""
                        , con=con
-                       , index_col="id")
+                       , index_col='id')
     
-    data.pivot(index='session_id', columns='question_name', values='question_choice')
+    print(data)
     
-    logging.info(data)
+    data = data.pivot(index='session_id', columns='question_name', values=['choice', 'drink'])
+    
+    print(data)
     
     pipeline = PMMLPipeline([
             ("transformation", DataFrameMapper([

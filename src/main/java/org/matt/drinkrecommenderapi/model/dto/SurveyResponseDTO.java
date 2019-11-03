@@ -5,8 +5,6 @@ import lombok.Data;
 import java.util.Map;
 
 @Data
-public class UserResponseDTO {
-    String user;
-    String drink;
+public class SurveyResponseDTO {
     Map<String, String> answers;
 }

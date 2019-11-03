@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user_responses")
+@Table(name = "survey_responses")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponse {
+public class SurveyResponse {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,11 +19,7 @@ public class UserResponse {
 
     @ManyToOne
     @JoinColumn
-    Session session;
-
-    @ManyToOne
-    @JoinColumn(name = "drink_name")
-    Drink drink;
+    Survey survey;
 
     @ManyToOne
     @JoinColumn(name = "question_name")

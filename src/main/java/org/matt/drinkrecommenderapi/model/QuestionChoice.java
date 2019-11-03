@@ -21,7 +21,7 @@ public class QuestionChoice {
     private String choice;
 
     @ManyToOne
-    @JoinColumn(name = "question_name")
+    @JoinColumn(name = "question_id")
     @JsonBackReference
     private Question question;
 

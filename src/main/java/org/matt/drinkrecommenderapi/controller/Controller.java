@@ -6,14 +6,13 @@ import java.util.Map;
 
 import org.matt.drinkrecommenderapi.evaluator.DrinkModelEvaluator;
 import org.matt.drinkrecommenderapi.model.Question;
-import org.matt.drinkrecommenderapi.model.Session;
-import org.matt.drinkrecommenderapi.model.UserResponse;
+import org.matt.drinkrecommenderapi.model.Survey;
+import org.matt.drinkrecommenderapi.model.SurveyResponse;
 import org.matt.drinkrecommenderapi.model.dto.QuestionDTO;
-import org.matt.drinkrecommenderapi.model.dto.UserResponseDTO;
-import org.matt.drinkrecommenderapi.repository.DrinkRepository;
+import org.matt.drinkrecommenderapi.model.dto.SurveyResponseDTO;
 import org.matt.drinkrecommenderapi.repository.QuestionRepository;
-import org.matt.drinkrecommenderapi.repository.SessionRepository;
-import org.matt.drinkrecommenderapi.repository.UserResponseRepository;
+import org.matt.drinkrecommenderapi.repository.SurveyRepository;
+import org.matt.drinkrecommenderapi.repository.SurveyResponseRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.StringRedisTemplate;
@@ -29,21 +28,18 @@ public class Controller {
 	private final int MODEL_TRAIN_LIMIT = 10;
 
 	QuestionRepository questionRepository;
-	UserResponseRepository userResponseRepository;
-	DrinkRepository drinkRepository;
-	SessionRepository sessionRepository;
+	SurveyResponseRepository surveyResponseRepository;
+	SurveyRepository surveyRepository;
 	DrinkModelEvaluator evaluator;
 	StringRedisTemplate redisTemplate;
 	int counter;
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
-	public Controller(QuestionRepository questionRepository, UserResponseRepository userResponseRepository,
-			DrinkRepository drinkRepository, SessionRepository sessionRepository, DrinkModelEvaluator evaluator,
-			StringRedisTemplate redisTemplate) {
+	public Controller(QuestionRepository questionRepository, SurveyResponseRepository surveyResponseRepository,
+			SurveyRepository surveyRepository, DrinkModelEvaluator evaluator, StringRedisTemplate redisTemplate) {
 		this.questionRepository = questionRepository;
-		this.userResponseRepository = userResponseRepository;
-		this.drinkRepository = drinkRepository;
-		this.sessionRepository = sessionRepository;
+		this.surveyResponseRepository = surveyResponseRepository;
+		this.surveyRepository = surveyRepository;
 		this.evaluator = evaluator;
 		this.redisTemplate = redisTemplate;
 		counter = 0;
@@ -59,34 +55,35 @@ public class Controller {
 		List<Question> questions = questionRepository.findAll();
 		List<QuestionDTO> questionDTOList = new ArrayList<>();
 		questions.forEach(question -> {
-			questionDTOList.add(new QuestionDTO(question.getQuestionName(), question.getQuestionText(),
-					question.getQuestionChoiceList()));
+			if (!question.getQuestionName().equals("drink") && !question.getQuestionName().equals("dayofweek")) {
+				questionDTOList.add(new QuestionDTO(question.getQuestionName(), question.getQuestionText(),
+						question.getQuestionChoiceList()));
+			}
 		});
 		return questionDTOList;
 	}
 
-	@PostMapping("/user-response")
-	public String createUserResponse(@RequestBody UserResponseDTO userResponseDTO) {
-		List<UserResponse> userResponseList = new ArrayList<>();
-		Session session = sessionRepository.save(new Session());
-		userResponseDTO.getAnswers().forEach((question, choice) -> {
-			UserResponse userResponse = new UserResponse();
-			userResponse.setSession(session);
-			userResponse.setDrink(drinkRepository.getOne(userResponseDTO.getDrink()));
-			userResponse.setQuestion(questionRepository.getOne(question));
-			userResponse.setQuestionChoice(questionRepository.getOne(question).getQuestionChoiceByChoiceString(choice));
-			userResponseList.add(userResponse);
+	@PostMapping("/survey-response")
+	public String createSurveyResponse(@RequestBody SurveyResponseDTO surveyResponseDTO) {
+		List<SurveyResponse> surveyResponseList = new ArrayList<>();
+		Survey survey = surveyRepository.save(new Survey());
+		surveyResponseDTO.getAnswers().forEach((question, choice) -> {
+			SurveyResponse surveyResponse = new SurveyResponse();
+			surveyResponse.setSurvey(survey);
+			surveyResponse.setQuestion(questionRepository.getOne(question));
+			surveyResponse.setQuestionChoice(questionRepository.getOne(question).getQuestionChoiceByChoiceString(choice));
+			surveyResponseList.add(surveyResponse);
 		});
 
-		logger.info("Counter = " + counter++);
+		logger.info("Counter = " + ++counter);
 		
 		if (counter > MODEL_TRAIN_LIMIT) {
 			redisTemplate.convertAndSend("trainModel", "trainModel");
 			counter = 0;
 		}
 		
-		userResponseRepository.saveAll(userResponseList);
-		return "User data saved to database";
+		surveyResponseRepository.saveAll(surveyResponseList);
+		return "Survey response saved to database";
 		
 	}
 }

@@ -9,11 +9,11 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "session")
+@Table(name = "survey")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class Session {
+public class Survey {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,6 +21,6 @@ public class Session {
 
     @Column(nullable = false, updatable = false)
     @CreationTimestamp
-    private Date created_at;
+    private Date timestamp;
 
 }

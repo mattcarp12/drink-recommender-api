@@ -25,13 +25,13 @@ public class DrinkModelEvaluator implements MessageListener {
 
 	private Evaluator evaluator;
 	private final StringRedisTemplate redisTemplate;
-	private final RedisMessageListenerContainer listenerContainer;
+	//private final RedisMessageListenerContainer listenerContainer;
 	Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	public DrinkModelEvaluator(StringRedisTemplate redisTemplate, RedisMessageListenerContainer listenerContainer)
 			throws Exception {
 		this.redisTemplate = redisTemplate;
-		this.listenerContainer = listenerContainer;
+		//this.listenerContainer = listenerContainer;
 		listenerContainer.addMessageListener(this, new ChannelTopic("transferModel"));
 		updateModel();
 	}

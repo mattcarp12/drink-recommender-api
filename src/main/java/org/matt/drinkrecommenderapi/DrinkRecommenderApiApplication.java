@@ -22,12 +22,6 @@ public class DrinkRecommenderApiApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(DrinkRecommenderApiApplication.class, args);
 	}
-
-	/*
-	 * @Bean static DrinkModelEvaluator getDrinkModelEvaluator(StringRedisTemplate
-	 * redisTemplate, RedisMessageListenerContainer container) throws Exception {
-	 * return new DrinkModelEvaluator(redisTemplate, container); }
-	 */
 	
 	@Bean
 	RedisMessageListenerContainer container(RedisConnectionFactory connectionFactory) {
