@@ -41,7 +41,12 @@ def get_sample_data(con):
 
     
 def get_training_data(con):
-    data = pd.read_sql("select * from user_responses"
+    data = pd.read_sql("""select drink_name as drink,  
+                        question_name, 
+                        question_choices.choice,
+                        session_id
+                        from user_responses inner join question_choices
+                        on user_responses.question_choice = question_choices.id"""
                        , con=con
                        , index_col="id")
     
