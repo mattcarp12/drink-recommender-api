@@ -6,6 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+
+import org.hibernate.validator.constraints.UniqueElements;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +23,7 @@ public class Question {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 	
+	@Column(unique = true)
     private String questionName;
     private String questionText;
 
@@ -27,16 +31,16 @@ public class Question {
     @JsonManagedReference
     private List<QuestionChoice> questionChoices;
 
-    public List<String> getQuestionChoiceList() {
+    public List<String> getQuestionChoiceStringList() {
         List<String> questionChoiceList = new ArrayList<>();
-        for (QuestionChoice questionChoice : questionChoices) {
+        for (QuestionChoice questionChoice : this.questionChoices) {
             questionChoiceList.add(questionChoice.getChoice());
         }
         return questionChoiceList;
     }
 
     public QuestionChoice getQuestionChoiceByChoiceString(String choice) {
-        for (QuestionChoice questionChoice : questionChoices) {
+        for (QuestionChoice questionChoice : this.questionChoices) {
             if (questionChoice.getChoice().equals(choice)) return questionChoice;
         }
         return null;

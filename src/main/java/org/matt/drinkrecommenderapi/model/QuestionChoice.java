@@ -18,11 +18,11 @@ public class QuestionChoice {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int id;
 
-    private String choice;
-
     @ManyToOne
     @JoinColumn(name = "question_id")
     @JsonBackReference
     private Question question;
+    
+    private String choice;
 
 }

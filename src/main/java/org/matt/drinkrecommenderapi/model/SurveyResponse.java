@@ -22,11 +22,11 @@ public class SurveyResponse {
     Survey survey;
 
     @ManyToOne
-    @JoinColumn(name = "question_name")
+    @JoinColumn(name = "question_id")
     Question question;
 
     @ManyToOne
-    @JoinColumn(name = "question_choice")
+    @JoinColumn(name = "question_choice_id")
     QuestionChoice questionChoice;
 
 }

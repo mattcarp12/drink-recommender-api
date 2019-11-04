@@ -57,7 +57,7 @@ public class Controller {
 		questions.forEach(question -> {
 			if (!question.getQuestionName().equals("drink") && !question.getQuestionName().equals("dayofweek")) {
 				questionDTOList.add(new QuestionDTO(question.getQuestionName(), question.getQuestionText(),
-						question.getQuestionChoiceList()));
+						question.getQuestionChoiceStringList()));
 			}
 		});
 		return questionDTOList;
@@ -70,8 +70,8 @@ public class Controller {
 		surveyResponseDTO.getAnswers().forEach((question, choice) -> {
 			SurveyResponse surveyResponse = new SurveyResponse();
 			surveyResponse.setSurvey(survey);
-			surveyResponse.setQuestion(questionRepository.getOne(question));
-			surveyResponse.setQuestionChoice(questionRepository.getOne(question).getQuestionChoiceByChoiceString(choice));
+			surveyResponse.setQuestion(questionRepository.findByQuestionName(question));
+			surveyResponse.setQuestionChoice(questionRepository.findByQuestionName(question).getQuestionChoiceByChoiceString(choice));
 			surveyResponseList.add(surveyResponse);
 		});
 
